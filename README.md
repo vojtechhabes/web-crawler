@@ -1,6 +1,6 @@
 # Web Crawler
 
-Web crawler napsaný Node.js, který prochází webové stránky a získává o nich různá data. Tyto data jsou poté uložena do databáze.
+Web crawler napsaný Node.js, který prochází webové stránky a získává o nich různá data. Tato data jsou poté uložena do databáze.
 
 ## Cíl
 
