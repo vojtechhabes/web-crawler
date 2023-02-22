@@ -17,7 +17,6 @@ Cílem je vytvořit kompletní řešení, které bude schopno automaticky proch�
 Nainstalujte:
 
 - Node.js
-- npm
 
 Naklonujte tento repozitář:
 
