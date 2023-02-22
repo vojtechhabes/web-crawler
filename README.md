@@ -47,4 +47,6 @@ Ve Firebase console běžte do Firestore databáze. Zde vytvořte novou kolekci 
 
 ## Tvůrce
 
-- [@vojhab](https://www.github.com/vojhab)
+[Vojtěch Habeš](https://www.github.com/vojhab)
+
+habes.vo.2022@ssps.cz
