@@ -2,6 +2,10 @@
 
 Web crawler napsaný Node.js, který prochází webové stránky a získává o nich různá data. Tyto data jsou poté uložena do databáze.
 
+## Cíl
+
+Cílem je vytvořit kompletní řešení, které bude schopno automaticky procházet webové stránky, získávat o nich data a ukládat je do databáze. Tento web crawler může být využit například k vytvoření nového vyhledávače nebo k analýze různých dat na webových stránkách.
+
 ## Použité balíčky
 
 - **Firebase Admin** pro přístup k Firestore databázi pro ukládání dat
