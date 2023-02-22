@@ -38,7 +38,7 @@ QUEUE_COLLECTION_NAME=
 CRAWLED_COLLECTION_NAME=
 ```
 
-Vytvořte nový projekt na Firebase console a zapněte Firestore databázi.
+Vytvořte nový projekt na Firebase console a aktivujte Firestore databázi.
 
 Na Firebase console vygenerujte nový private key a soubor přejmenujte na "serviceAccountKey.json". Soubor pak vložte do adresáře se staženým repozitářem.
 
