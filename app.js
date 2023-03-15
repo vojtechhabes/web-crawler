@@ -25,6 +25,12 @@ async function main() {
       process.env.CRAWLED_COLLECTION_NAME,
       websiteDescription
     );
+
+    await firestore.addLinksToQueue(
+      db,
+      process.env.QUEUE_COLLECTION_NAME,
+      websiteData.links
+    );
   } catch (error) {
     console.error(error);
     return;

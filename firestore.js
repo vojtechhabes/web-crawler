@@ -66,6 +66,20 @@ export async function deleteEntry(db, collectionName, entry) {
   }
 }
 
+export async function addLinksToQueue(db, collectionName, data) {
+  try {
+    const collectionRef = db.collection(collectionName);
+    await data.forEach(async (link) => {
+      await collectionRef.add({
+        url: link,
+      });
+    });
+    return;
+  } catch (error) {
+    throw new Error("Error writing entry: " + error.message);
+  }
+}
+
 export async function getDataAboutWebsite(url, headers) {
   try {
     const response = await axios.get(url, { headers });
