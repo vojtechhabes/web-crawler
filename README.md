@@ -31,7 +31,7 @@ Otevřete terminál v adresáři s repozitářem nainstalujte všechny potřebn�
   npm install
 ```
 
-Vytvořte soubor .env a vložte do něj toto a upravte si hodnoty dle svých potřeb:
+Vytvořte .env soubor, vložte do něj tento kód a upravte si hodnoty dle svých potřeb:
 
 ```
 USER_AGENT=
