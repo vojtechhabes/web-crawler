@@ -42,10 +42,16 @@ export async function getOldestEntry(db, collectionName, sortField) {
 export async function writeEntry(db, collectionName, data) {
   try {
     const collectionRef = db.collection(collectionName);
-    const query = collectionRef.where("url", "==", data.websiteDetails.url);
+    const query = collectionRef.where(
+      "websiteDetails.url",
+      "==",
+      data.websiteDetails.url
+    );
     const querySnapshot = await query.get();
     if (!querySnapshot.empty) {
-      throw new Error("Entry already exists: " + JSON.stringify(data));
+      throw new Error(
+        `Entry with url ${data.websiteDetails.url} already exists.`
+      );
     }
     data.timestamp = FieldValue.serverTimestamp();
     const docRef = await collectionRef.add(data);

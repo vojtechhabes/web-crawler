@@ -14,17 +14,27 @@ async function crawl(db, url, headers) {
   try {
     const websiteData = await firestore.getDataAboutWebsite(url, headers);
 
+    const websiteDataToWrite = websiteData;
+    if (process.env.SAVE_LINKS == "false") {
+      websiteDataToWrite.links = [];
+    }
+    if (process.env.SAVE_HEADINGS == "false") {
+      websiteDataToWrite.headings = [];
+    }
+
     await firestore.writeEntry(
       db,
       process.env.CRAWLED_COLLECTION_NAME,
-      websiteData
+      websiteDataToWrite
     );
 
+    /*
     await firestore.addLinksToQueue(
       db,
       process.env.QUEUE_COLLECTION_NAME,
       websiteData.links
     );
+    */
 
     console.log(`Crawled: ${url}`);
   } catch (error) {
@@ -35,7 +45,7 @@ async function crawl(db, url, headers) {
 
 const db = firestore.getDb();
 db.settings({
-  ignoreUndefinedProperties: process.env.IGNORE_UNDEFINED_PROPERTIES,
+  ignoreUndefinedProperties: true,
 });
 
 crawl(db, "https://www.alza.cz", headers);
