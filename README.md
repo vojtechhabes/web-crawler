@@ -11,6 +11,7 @@ Cílem je vytvořit kompletní řešení, které bude schopno automaticky proch�
 - **Firebase Admin** pro přístup k Firestore databázi pro ukládání dat
 - **Cheerio** pro zpracování HTML stránek
 - **Axios** pro HTTP požadavky
+- **Dotenv** pro načítání proměnných z .env souboru
 
 ## Instalace
 

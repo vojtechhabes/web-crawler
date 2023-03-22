@@ -42,7 +42,7 @@ export async function getOldestEntry(db, collectionName, sortField) {
 export async function writeEntry(db, collectionName, data) {
   try {
     const collectionRef = db.collection(collectionName);
-    const query = collectionRef.where("url", "==", data.url);
+    const query = collectionRef.where("url", "==", data.websiteDetails.url);
     const querySnapshot = await query.get();
     if (!querySnapshot.empty) {
       throw new Error("Entry already exists: " + JSON.stringify(data));
@@ -76,7 +76,7 @@ export async function addLinksToQueue(db, collectionName, data) {
     });
     return;
   } catch (error) {
-    throw new Error("Error writing entry: " + error.message);
+    throw new Error("Error while adding links to queue: " + error.message);
   }
 }
 
@@ -98,7 +98,7 @@ export async function getDataAboutWebsite(url, headers) {
     }
     url = response.request.res.responseUrl;
 
-    const websiteDescription = {
+    const websiteDetails = {
       url,
       title,
       description,
@@ -141,10 +141,22 @@ export async function getDataAboutWebsite(url, headers) {
 
       links.push(href);
     });
+
+    var headings = [];
+    $("h1, h2, h3, h4, h5, h6").each((i, heading) => {
+      var text = $(heading).text();
+      if (text == null) {
+        return;
+      }
+      headings.push(text);
+    });
+
     const data = {
-      websiteDescription,
+      websiteDetails,
+      headings,
       links,
     };
+
     return data;
   } catch (error) {
     throw new Error("Error getting data about website: " + error.message);
