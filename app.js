@@ -12,6 +12,7 @@ const headers = {
 async function crawl(db, url, headers) {
   console.log("Crawling: " + url);
   try {
+    /*
     const websiteData = await firestore.getDataAboutWebsite(url, headers);
 
     const websiteDataToWrite = JSON.parse(JSON.stringify(websiteData));
@@ -33,7 +34,7 @@ async function crawl(db, url, headers) {
       process.env.QUEUE_COLLECTION_NAME,
       websiteData.links
     );
-
+*/
     console.log(`Crawled: ${url}`);
   } catch (error) {
     console.error(error);
@@ -41,9 +42,12 @@ async function crawl(db, url, headers) {
   }
 }
 
-const db = firestore.getDb();
-db.settings({
-  ignoreUndefinedProperties: true,
+const pool = new Pool({
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
 });
 
 crawl(db, "https://www.alza.cz", headers);
