@@ -14,7 +14,7 @@ async function crawl(db, url, headers) {
   try {
     const websiteData = await firestore.getDataAboutWebsite(url, headers);
 
-    const websiteDataToWrite = websiteData;
+    const websiteDataToWrite = JSON.parse(JSON.stringify(websiteData));
     if (process.env.SAVE_LINKS == "false") {
       websiteDataToWrite.links = [];
     }
@@ -28,13 +28,11 @@ async function crawl(db, url, headers) {
       websiteDataToWrite
     );
 
-    /*
     await firestore.addLinksToQueue(
       db,
       process.env.QUEUE_COLLECTION_NAME,
       websiteData.links
     );
-    */
 
     console.log(`Crawled: ${url}`);
   } catch (error) {
