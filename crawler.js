@@ -1,10 +1,10 @@
-import axios from "axios";
-import cheerio from "cheerio";
-import dotenv from "dotenv";
-import { Pool } from "pg";
+const axios = require("axios");
+const cheerio = require("cheerio");
+const dotenv = require("dotenv");
 
 dotenv.config();
 
+/*
 export async function getOldestEntry(db, collectionName, sortField) {
   try {
     const collectionRef = db.collection(collectionName);
@@ -21,29 +21,30 @@ export async function getOldestEntry(db, collectionName, sortField) {
     throw new Error("Error getting oldest entry: " + error.message);
   }
 }
+*/
 
-export async function writeEntry(db, collectionName, data) {
+module.exports.writeEntry = async function(pool, data) {
   try {
-    const collectionRef = db.collection(collectionName);
-    const query = collectionRef.where(
-      "websiteDetails.url",
-      "==",
-      data.websiteDetails.url
-    );
-    const querySnapshot = await query.get();
-    if (!querySnapshot.empty) {
-      throw new Error(
-        `Entry with url ${data.websiteDetails.url} already exists.`
-      );
-    }
-    data.timestamp = FieldValue.serverTimestamp();
-    const docRef = await collectionRef.add(data);
-    return docRef;
+    const client = await pool.connect();
+    const query = {
+      text: "INSERT INTO crawled(url, title, description, keywords, headings, links) VALUES($1, $2, $3, $4, $5, $6)",
+      values: [
+        data.websiteDetails.url, 
+        data.websiteDetails.title, 
+        data.websiteDetails.description, 
+        data.websiteDetails.keywords, 
+        data.headings, 
+        data.links
+      ],
+    };
+    await client.query(query);
+    client.release();
   } catch (error) {
     throw new Error("Error writing entry: " + error.message);
   }
 }
 
+/*
 export async function deleteEntry(db, collectionName, entry) {
   try {
     const collectionRef = db.collection(collectionName);
@@ -54,7 +55,9 @@ export async function deleteEntry(db, collectionName, entry) {
     throw new Error("Error deleting entry: " + error.message);
   }
 }
+*/
 
+/*
 export async function addLinksToQueue(db, collectionName, data) {
   try {
     const collectionRef = db.collection(collectionName);
@@ -68,8 +71,9 @@ export async function addLinksToQueue(db, collectionName, data) {
     throw new Error("Error while adding links to queue: " + error.message);
   }
 }
+*/
 
-export async function getDataAboutWebsite(url, headers) {
+module.exports.getDataAboutWebsite = async function(url, headers) {
   try {
     const response = await axios.get(url, { headers });
     const $ = cheerio.load(response.data);

@@ -1,9 +1,8 @@
-import * as crawler from "./crawler.js";
-import dotenv from "dotenv";
+const crawler = require("./crawler.js");
+const dotenv = require("dotenv");
+const { Pool } = require("pg");
 
 dotenv.config();
-
-await firestore.initializeFirebaseApp();
 
 const headers = {
   "User-Agent": process.env.USER_AGENT,
@@ -12,9 +11,9 @@ const headers = {
 async function crawl(db, url, headers) {
   console.log("Crawling: " + url);
   try {
+    
+    const websiteData = await crawler.getDataAboutWebsite(url, headers);
     /*
-    const websiteData = await firestore.getDataAboutWebsite(url, headers);
-
     const websiteDataToWrite = JSON.parse(JSON.stringify(websiteData));
     if (process.env.SAVE_LINKS == "false") {
       websiteDataToWrite.links = [];
@@ -22,19 +21,18 @@ async function crawl(db, url, headers) {
     if (process.env.SAVE_HEADINGS == "false") {
       websiteDataToWrite.headings = [];
     }
-
-    await firestore.writeEntry(
-      db,
-      process.env.CRAWLED_COLLECTION_NAME,
-      websiteDataToWrite
+    */
+    await crawler.writeEntry(
+      pool,
+      websiteData
     );
-
+    /*
     await firestore.addLinksToQueue(
       db,
       process.env.QUEUE_COLLECTION_NAME,
       websiteData.links
     );
-*/
+    */
     console.log(`Crawled: ${url}`);
   } catch (error) {
     console.error(error);
@@ -50,4 +48,4 @@ const pool = new Pool({
   port: process.env.DB_PORT,
 });
 
-crawl(db, "https://www.alza.cz", headers);
+crawl(pool, "https://www.alza.cz", headers);
