@@ -1,4 +1,4 @@
-import * as firestore from "./firestore.js";
+import * as crawler from "./crawler.js";
 import dotenv from "dotenv";
 
 dotenv.config();

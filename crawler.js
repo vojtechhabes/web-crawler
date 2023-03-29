@@ -1,23 +1,9 @@
 import axios from "axios";
 import cheerio from "cheerio";
 import dotenv from "dotenv";
+import { Pool } from "pg";
 
 dotenv.config();
-
-export async function initializeFirebaseApp() {
-  try {
-    initializeApp({
-      credential: cert(serviceAccountKey),
-    });
-  } catch (error) {
-    throw new Error("Error initializing Firebase: " + error.message);
-  }
-}
-
-export function getDb() {
-  const db = getFirestore();
-  return db;
-}
 
 export async function getOldestEntry(db, collectionName, sortField) {
   try {
