@@ -1,9 +1,6 @@
 import axios from "axios";
 import cheerio from "cheerio";
 import dotenv from "dotenv";
-import { initializeApp, applicationDefault, cert } from "firebase-admin/app";
-import { getFirestore, Timestamp, FieldValue } from "firebase-admin/firestore";
-import serviceAccountKey from "./serviceAccountKey.json" assert { type: "json" };
 
 dotenv.config();
 
