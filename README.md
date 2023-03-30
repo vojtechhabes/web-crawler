@@ -75,7 +75,7 @@ CREATE TABLE queue (
 );
 ```
 
-Nakonec vložte do tabulky "queue" odkaz, který chcete procházet:
+Nakonec vložte do tabulky "queue" odkaz, na kterém má web crawler začít:
 
 ```sql
 INSERT INTO queue (url) VALUES ('https://www.example.com');
