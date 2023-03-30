@@ -11,7 +11,6 @@ const headers = {
 async function crawl(db, url, headers) {
   console.log("Crawling: " + url);
   try {
-    
     const websiteData = await crawler.getDataAboutWebsite(url, headers);
     /*
     const websiteDataToWrite = JSON.parse(JSON.stringify(websiteData));
@@ -28,12 +27,12 @@ async function crawl(db, url, headers) {
     );
     
     await crawler.addLinksToQueue(
-      db,
-      process.env.QUEUE_COLLECTION_NAME,
+      pool,
       websiteData.links
     );
     
     console.log(`Crawled: ${url}`);
+    return;
   } catch (error) {
     console.error(error);
     return;
