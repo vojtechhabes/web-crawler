@@ -57,21 +57,22 @@ export async function deleteEntry(db, collectionName, entry) {
 }
 */
 
-/*
-export async function addLinksToQueue(db, collectionName, data) {
+module.exports.addLinksToQueue = async function(pool, data) {
   try {
-    const collectionRef = db.collection(collectionName);
+    const client = await pool.connect();
     await data.forEach(async (link) => {
-      await collectionRef.add({
-        url: link,
-      });
+      const query = {
+        text: "INSERT INTO queue(url) VALUES($1)",
+        values: [link],
+      };
+      await client.query(query);
     });
+    client.release();
     return;
   } catch (error) {
     throw new Error("Error while adding links to queue: " + error.message);
   }
 }
-*/
 
 module.exports.getDataAboutWebsite = async function(url, headers) {
   try {

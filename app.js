@@ -26,13 +26,13 @@ async function crawl(db, url, headers) {
       pool,
       websiteData
     );
-    /*
-    await firestore.addLinksToQueue(
+    
+    await crawler.addLinksToQueue(
       db,
       process.env.QUEUE_COLLECTION_NAME,
       websiteData.links
     );
-    */
+    
     console.log(`Crawled: ${url}`);
   } catch (error) {
     console.error(error);
