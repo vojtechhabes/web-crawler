@@ -12,15 +12,7 @@ async function crawl(db, url, headers) {
   console.log("Crawling: " + url);
   try {
     const websiteData = await crawler.getDataAboutWebsite(url, headers);
-    /*
-    const websiteDataToWrite = JSON.parse(JSON.stringify(websiteData));
-    if (process.env.SAVE_LINKS == "false") {
-      websiteDataToWrite.links = [];
-    }
-    if (process.env.SAVE_HEADINGS == "false") {
-      websiteDataToWrite.headings = [];
-    }
-    */
+
     await crawler.writeEntry(
       pool,
       websiteData

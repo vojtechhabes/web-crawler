@@ -43,8 +43,6 @@ Vytvořte .env soubor, vložte do něj tento kód a doplňte hodnoty dle svých 
 
 ```
 USER_AGENT=
-SAVE_LINKS=
-SAVE_HEADINGS=
 DB_USER=
 DB_HOST=
 DB_NAME=
