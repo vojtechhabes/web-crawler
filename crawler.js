@@ -17,9 +17,8 @@ module.exports.getOldestEntry = async function(pool, tableName, sortField) {
         "No matching documents found for query: " + JSON.stringify(query)
       );
     }
-    const oldestDoc = result.rows[0];
     client.release();
-    return oldestDoc;
+    return result.rows[0];
   } catch (error) {
     throw new Error(`Error getting oldest entry from ${tableName}: ${error.message}`);
   }
@@ -47,18 +46,20 @@ module.exports.writeCrawledWebsite = async function(pool, tableName, data) {
   }
 }
 
-/*
-export async function deleteEntry(db, collectionName, entry) {
+module.exports.deleteEntryById = async function(pool, tableName, id) {
   try {
-    const collectionRef = db.collection(collectionName);
-    const docRef = collectionRef.doc(entry.id);
-    await docRef.delete();
-    return docRef;
+    const client = await pool.connect();
+    const query = {
+      text: `DELETE FROM ${tableName} WHERE id = $1`,
+      values: [id],
+    };
+    await client.query(query);
+    client.release();
+    return;
   } catch (error) {
     throw new Error("Error deleting entry: " + error.message);
   }
 }
-*/
 
 module.exports.addLinksToQueue = async function(pool, tableName, data) {
   try {
