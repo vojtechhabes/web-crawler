@@ -32,3 +32,16 @@ const pool = new Pool({
   password: process.env.DB_PASSWORD,
   port: process.env.DB_PORT,
 });
+
+(async () => {
+  while (true) {
+    const oldestEntry = await crawler.getOldestEntry(pool, "queue", "timestamp");
+    if (oldestEntry instanceof Error) {
+      console.error(oldestEntry);
+      break;
+    }
+    await crawl(pool, oldestEntry.url, headers);
+    await crawler.deleteEntryById(pool, "queue", oldestEntry.id);
+    await new Promise(resolve => setTimeout(resolve, 1000));
+  }
+})();
