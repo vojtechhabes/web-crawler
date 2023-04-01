@@ -1,92 +1,95 @@
-import axios from "axios";
-import cheerio from "cheerio";
-import dotenv from "dotenv";
-import { initializeApp, applicationDefault, cert } from "firebase-admin/app";
-import { getFirestore, Timestamp, FieldValue } from "firebase-admin/firestore";
-import serviceAccountKey from "./serviceAccountKey.json" assert { type: "json" };
+const axios = require("axios");
+const cheerio = require("cheerio");
+const dotenv = require("dotenv");
 
 dotenv.config();
 
-export async function initializeFirebaseApp() {
+module.exports.getOldestEntry = async function (pool, tableName, sortField) {
   try {
-    initializeApp({
-      credential: cert(serviceAccountKey),
-    });
-  } catch (error) {
-    throw new Error("Error initializing Firebase: " + error.message);
-  }
-}
-
-export function getDb() {
-  const db = getFirestore();
-  return db;
-}
-
-export async function getOldestEntry(db, collectionName, sortField) {
-  try {
-    const collectionRef = db.collection(collectionName);
-    const query = collectionRef.orderBy(sortField).limit(1);
-    const querySnapshot = await query.get();
-    if (querySnapshot.empty) {
+    const client = await pool.connect();
+    const query = {
+      text: `SELECT * FROM ${tableName} ORDER BY ${sortField} ASC LIMIT 1`,
+    };
+    const result = await client.query(query);
+    if (result.rows.length === 0) {
       throw new Error(
         "No matching documents found for query: " + JSON.stringify(query)
       );
     }
-    const oldestDoc = querySnapshot.docs[0];
-    return oldestDoc;
+    client.release();
+    return result.rows[0];
   } catch (error) {
-    throw new Error("Error getting oldest entry: " + error.message);
-  }
-}
-
-export async function writeEntry(db, collectionName, data) {
-  try {
-    const collectionRef = db.collection(collectionName);
-    const query = collectionRef.where(
-      "websiteDetails.url",
-      "==",
-      data.websiteDetails.url
+    throw new Error(
+      `Error getting oldest entry from ${tableName}: ${error.message}`
     );
-    const querySnapshot = await query.get();
-    if (!querySnapshot.empty) {
+  }
+};
+
+module.exports.writeCrawledWebsite = async function (pool, tableName, data) {
+  try {
+    const client = await pool.connect();
+    const checkQuery = {
+      text: `SELECT * FROM ${tableName} WHERE url = $1`,
+      values: [data.websiteDetails.url],
+    };
+    const checkResult = await client.query(checkQuery);
+    if (checkResult.rows.length > 0) {
       throw new Error(
-        `Entry with url ${data.websiteDetails.url} already exists.`
+        `Website ${data.websiteDetails.url} already exists in the database`
       );
     }
-    data.timestamp = FieldValue.serverTimestamp();
-    const docRef = await collectionRef.add(data);
-    return docRef;
+    const query = {
+      text: `INSERT INTO ${tableName}(url, title, description, keywords, headings, links) VALUES($1, $2, $3, $4, $5, $6)`,
+      values: [
+        data.websiteDetails.url,
+        data.websiteDetails.title,
+        data.websiteDetails.description,
+        data.websiteDetails.keywords,
+        data.headings,
+        data.links,
+      ],
+    };
+    await client.query(query);
+    client.release();
+    return;
   } catch (error) {
     throw new Error("Error writing entry: " + error.message);
   }
-}
+};
 
-export async function deleteEntry(db, collectionName, entry) {
+module.exports.deleteEntryById = async function (pool, tableName, id) {
   try {
-    const collectionRef = db.collection(collectionName);
-    const docRef = collectionRef.doc(entry.id);
-    await docRef.delete();
-    return docRef;
+    const client = await pool.connect();
+    const query = {
+      text: `DELETE FROM ${tableName} WHERE id = $1`,
+      values: [id],
+    };
+    await client.query(query);
+    client.release();
+    return;
   } catch (error) {
     throw new Error("Error deleting entry: " + error.message);
   }
-}
+};
 
-export async function addLinksToQueue(db, collectionName, data) {
+module.exports.addLinksToQueue = async function (pool, tableName, data) {
   try {
-    const collectionRef = db.collection(collectionName);
+    const client = await pool.connect();
     await data.forEach(async (link) => {
-      await collectionRef.add({
-        url: link,
-      });
+      const query = {
+        text: `INSERT INTO ${tableName}(url) VALUES($1)`,
+        values: [link],
+      };
+      await client.query(query);
     });
+    client.release();
     return;
   } catch (error) {
     throw new Error("Error while adding links to queue: " + error.message);
   }
-}
+};
 
-export async function getDataAboutWebsite(url, headers) {
+module.exports.getDataAboutWebsite = async function (url, headers) {
   try {
     const response = await axios.get(url, { headers });
     const $ = cheerio.load(response.data);
@@ -167,4 +170,4 @@ export async function getDataAboutWebsite(url, headers) {
   } catch (error) {
     throw new Error("Error getting data about website: " + error.message);
   }
-}
+};

@@ -1,23 +1,31 @@
-# Web Crawler
+# Web crawler
 
-Web crawler napsaný v Node.js, který prochází webové stránky a získává o nich různá data. Tato data jsou poté uložena do databáze.
+Tento Node.js program jako pavouk prochází webové stránky a sbírá o nich různá data. Tyto cenné informace jsou pak ukládány do PostgreSQL databáze a slouží jako zdroj informací pro další analýzy a výzkum.
 
-## Cíl
+## Cíl projektu
 
-Cílem je vytvořit kompletní řešení, které bude schopno automaticky procházet webové stránky, získávat o nich data a ukládat je do databáze. Tento web crawler může být využit například k vytvoření nového vyhledávače nebo k analýze různých dat na webových stránkách.
+Cílem tohoto projektu je vytvořit sofistikované kompletní řešení pro automatické procházení webových stránek, sbírání dat a jejich následné ukládání do databáze. Možnosti využití tohoto web crawlera jsou nekonečné - lze ho použít například pro vytvoření nového vyhledávače nebo pro provádění různých analýz dat.
 
-## Použité balíčky
+## Použité technologie
 
-- **Firebase Admin** pro přístup k Firestore databázi pro ukládání dat
+- Node.js
+- PostgreSQL
+
+## Použité npm balíčky
+
+- **pg** pro přístup k PostgreSQL databázi
 - **Cheerio** pro zpracování HTML stránek
 - **Axios** pro HTTP požadavky
 - **Dotenv** pro načítání proměnných z .env souboru
 
-## Instalace
+## Použití
 
-Nainstalujte:
+Co budete potřebovat:
 
-- Node.js
+- Nainstalované **Node.js**
+- **PostgreSQL** databázi
+- Nainstalovaný **Git**
+- Libovolný **editor kódu**
 
 Naklonujte tento repozitář:
 
@@ -31,19 +39,47 @@ Otevřete terminál v adresáři s repozitářem nainstalujte všechny potřebn�
   npm install
 ```
 
-Vytvořte .env soubor, vložte do něj tento kód a upravte si hodnoty dle svých potřeb:
+Vytvořte .env soubor, vložte do něj tento kód a doplňte hodnoty dle svých potřeb:
 
 ```
 USER_AGENT=
-QUEUE_COLLECTION_NAME=
-CRAWLED_COLLECTION_NAME=
-SAVE_LINKS=
-SAVE_HEADINGS=
+DB_USER=
+DB_HOST=
+DB_NAME=
+DB_PASSWORD=
+DB_PORT=
 ```
 
-Vytvořte nový projekt na Firebase console a aktivujte Firestore databázi.
+V PostgreSQL databázi vytvořte tabulku s názvem "crawled", která bude sloužit pro ukládání imformací o nalezených webech:
 
-Přes Firebase console vytvořte nový private key a soubor přejmenujte na "serviceAccountKey.json". Soubor pak vložte do adresáře se staženým repozitářem.
+```sql
+CREATE TABLE crawled (
+  id SERIAL PRIMARY KEY,
+  timestamp TIMESTAMP NOT NULL DEFAULT NOW(),
+  url TEXT NOT NULL,
+  title TEXT,
+  description TEXT,
+  keywords TEXT,
+  headings TEXT[],
+  links TEXT[]
+);
+```
+
+Dále vytvořte tabulku s názvem "queue", která bude sloužit pro ukládání odkazů, které ještě nebyly procházeny:
+
+```sql
+CREATE TABLE queue (
+  id SERIAL PRIMARY KEY,
+  timestamp TIMESTAMP NOT NULL DEFAULT NOW(),
+  url TEXT NOT NULL
+);
+```
+
+Nakonec vložte do tabulky "queue" odkaz, na kterém má web crawler začít:
+
+```sql
+INSERT INTO queue (url) VALUES ('https://www.example.com');
+```
 
 ## Tvůrce
 

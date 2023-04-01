@@ -1,49 +1,34 @@
-import * as firestore from "./firestore.js";
-import dotenv from "dotenv";
+const crawler = require("./crawler.js");
+const dotenv = require("dotenv");
+const { Pool } = require("pg");
 
 dotenv.config();
-
-await firestore.initializeFirebaseApp();
 
 const headers = {
   "User-Agent": process.env.USER_AGENT,
 };
 
-async function crawl(db, url, headers) {
+async function crawl(pool, url, headers) {
   console.log("Crawling: " + url);
   try {
-    const websiteData = await firestore.getDataAboutWebsite(url, headers);
+    const websiteData = await crawler.getDataAboutWebsite(url, headers);
 
-    const websiteDataToWrite = JSON.parse(JSON.stringify(websiteData));
-    if (process.env.SAVE_LINKS == "false") {
-      websiteDataToWrite.links = [];
-    }
-    if (process.env.SAVE_HEADINGS == "false") {
-      websiteDataToWrite.headings = [];
-    }
+    await crawler.writeCrawledWebsite(pool, "crawled", websiteData);
 
-    await firestore.writeEntry(
-      db,
-      process.env.CRAWLED_COLLECTION_NAME,
-      websiteDataToWrite
-    );
-
-    await firestore.addLinksToQueue(
-      db,
-      process.env.QUEUE_COLLECTION_NAME,
-      websiteData.links
-    );
+    await crawler.addLinksToQueue(pool, "queue", websiteData.links);
 
     console.log(`Crawled: ${url}`);
+    return;
   } catch (error) {
-    console.error(error);
+    console.error(`Error crawling ${url}: ${error}`);
     return;
   }
 }
 
-const db = firestore.getDb();
-db.settings({
-  ignoreUndefinedProperties: true,
+const pool = new Pool({
+  user: process.env.DB_USER,
+  host: process.env.DB_HOST,
+  database: process.env.DB_NAME,
+  password: process.env.DB_PASSWORD,
+  port: process.env.DB_PORT,
 });
-
-crawl(db, "https://www.alza.cz", headers);
