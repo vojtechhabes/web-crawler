@@ -4,30 +4,33 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
-/*
-export async function getOldestEntry(db, collectionName, sortField) {
+
+module.exports.getOldestEntry = async function(pool, tableName, sortField) {  
   try {
-    const collectionRef = db.collection(collectionName);
-    const query = collectionRef.orderBy(sortField).limit(1);
-    const querySnapshot = await query.get();
-    if (querySnapshot.empty) {
+    const client = await pool.connect();
+    const query = {
+      text: `SELECT * FROM ${tableName} ORDER BY ${sortField} ASC LIMIT 1`,
+    };
+    const result = await client.query(query);
+    if (result.rows.length === 0) {
       throw new Error(
         "No matching documents found for query: " + JSON.stringify(query)
       );
     }
-    const oldestDoc = querySnapshot.docs[0];
+    const oldestDoc = result.rows[0];
+    client.release();
     return oldestDoc;
   } catch (error) {
-    throw new Error("Error getting oldest entry: " + error.message);
+    throw new Error(`Error getting oldest entry from ${tableName}: ${error.message}`);
   }
 }
-*/
 
-module.exports.writeEntry = async function(pool, data) {
+
+module.exports.writeCrawledWebsite = async function(pool, tableName, data) {
   try {
     const client = await pool.connect();
     const query = {
-      text: "INSERT INTO crawled(url, title, description, keywords, headings, links) VALUES($1, $2, $3, $4, $5, $6)",
+      text: `INSERT INTO ${tableName}(url, title, description, keywords, headings, links) VALUES($1, $2, $3, $4, $5, $6)`,
       values: [
         data.websiteDetails.url, 
         data.websiteDetails.title, 
@@ -57,12 +60,12 @@ export async function deleteEntry(db, collectionName, entry) {
 }
 */
 
-module.exports.addLinksToQueue = async function(pool, data) {
+module.exports.addLinksToQueue = async function(pool, tableName, data) {
   try {
     const client = await pool.connect();
     await data.forEach(async (link) => {
       const query = {
-        text: "INSERT INTO queue(url) VALUES($1)",
+        text: `INSERT INTO ${tableName}(url) VALUES($1)`,
         values: [link],
       };
       await client.query(query);

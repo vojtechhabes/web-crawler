@@ -13,13 +13,15 @@ async function crawl(db, url, headers) {
   try {
     const websiteData = await crawler.getDataAboutWebsite(url, headers);
 
-    await crawler.writeEntry(
+    await crawler.writeCrawledWebsite(
       pool,
+      "crawled",
       websiteData
     );
     
     await crawler.addLinksToQueue(
       pool,
+      "queue",
       websiteData.links
     );
     
