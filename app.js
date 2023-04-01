@@ -8,27 +8,19 @@ const headers = {
   "User-Agent": process.env.USER_AGENT,
 };
 
-async function crawl(db, url, headers) {
+async function crawl(pool, url, headers) {
   console.log("Crawling: " + url);
   try {
     const websiteData = await crawler.getDataAboutWebsite(url, headers);
 
-    await crawler.writeCrawledWebsite(
-      pool,
-      "crawled",
-      websiteData
-    );
-    
-    await crawler.addLinksToQueue(
-      pool,
-      "queue",
-      websiteData.links
-    );
-    
+    await crawler.writeCrawledWebsite(pool, "crawled", websiteData);
+
+    await crawler.addLinksToQueue(pool, "queue", websiteData.links);
+
     console.log(`Crawled: ${url}`);
     return;
   } catch (error) {
-    console.error(error);
+    console.error(`Error crawling ${url}: ${error}`);
     return;
   }
 }
@@ -40,5 +32,3 @@ const pool = new Pool({
   password: process.env.DB_PASSWORD,
   port: process.env.DB_PORT,
 });
-
-crawl(pool, "https://www.alza.cz", headers);

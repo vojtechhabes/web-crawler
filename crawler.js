@@ -4,8 +4,7 @@ const dotenv = require("dotenv");
 
 dotenv.config();
 
-
-module.exports.getOldestEntry = async function(pool, tableName, sortField) {  
+module.exports.getOldestEntry = async function (pool, tableName, sortField) {
   try {
     const client = await pool.connect();
     const query = {
@@ -20,33 +19,45 @@ module.exports.getOldestEntry = async function(pool, tableName, sortField) {
     client.release();
     return result.rows[0];
   } catch (error) {
-    throw new Error(`Error getting oldest entry from ${tableName}: ${error.message}`);
+    throw new Error(
+      `Error getting oldest entry from ${tableName}: ${error.message}`
+    );
   }
-}
+};
 
-
-module.exports.writeCrawledWebsite = async function(pool, tableName, data) {
+module.exports.writeCrawledWebsite = async function (pool, tableName, data) {
   try {
     const client = await pool.connect();
+    const checkQuery = {
+      text: `SELECT * FROM ${tableName} WHERE url = $1`,
+      values: [data.websiteDetails.url],
+    };
+    const checkResult = await client.query(checkQuery);
+    if (checkResult.rows.length > 0) {
+      throw new Error(
+        `Website ${data.websiteDetails.url} already exists in the database`
+      );
+    }
     const query = {
       text: `INSERT INTO ${tableName}(url, title, description, keywords, headings, links) VALUES($1, $2, $3, $4, $5, $6)`,
       values: [
-        data.websiteDetails.url, 
-        data.websiteDetails.title, 
-        data.websiteDetails.description, 
-        data.websiteDetails.keywords, 
-        data.headings, 
-        data.links
+        data.websiteDetails.url,
+        data.websiteDetails.title,
+        data.websiteDetails.description,
+        data.websiteDetails.keywords,
+        data.headings,
+        data.links,
       ],
     };
     await client.query(query);
     client.release();
+    return;
   } catch (error) {
     throw new Error("Error writing entry: " + error.message);
   }
-}
+};
 
-module.exports.deleteEntryById = async function(pool, tableName, id) {
+module.exports.deleteEntryById = async function (pool, tableName, id) {
   try {
     const client = await pool.connect();
     const query = {
@@ -59,9 +70,9 @@ module.exports.deleteEntryById = async function(pool, tableName, id) {
   } catch (error) {
     throw new Error("Error deleting entry: " + error.message);
   }
-}
+};
 
-module.exports.addLinksToQueue = async function(pool, tableName, data) {
+module.exports.addLinksToQueue = async function (pool, tableName, data) {
   try {
     const client = await pool.connect();
     await data.forEach(async (link) => {
@@ -76,9 +87,9 @@ module.exports.addLinksToQueue = async function(pool, tableName, data) {
   } catch (error) {
     throw new Error("Error while adding links to queue: " + error.message);
   }
-}
+};
 
-module.exports.getDataAboutWebsite = async function(url, headers) {
+module.exports.getDataAboutWebsite = async function (url, headers) {
   try {
     const response = await axios.get(url, { headers });
     const $ = cheerio.load(response.data);
@@ -159,4 +170,4 @@ module.exports.getDataAboutWebsite = async function(url, headers) {
   } catch (error) {
     throw new Error("Error getting data about website: " + error.message);
   }
-}
+};
