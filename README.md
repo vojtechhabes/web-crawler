@@ -43,6 +43,8 @@ Vytvořte .env soubor, vložte do něj tento kód a doplňte hodnoty dle svých 
 
 ```
 USER_AGENT=
+CRAWLED_TABLE=
+QUEUE_TABLE=
 DB_USER=
 DB_HOST=
 DB_NAME=
@@ -50,7 +52,7 @@ DB_PASSWORD=
 DB_PORT=
 ```
 
-V PostgreSQL databázi vytvořte tabulku s názvem "crawled", která bude sloužit pro ukládání imformací o nalezených webech:
+V PostgreSQL databázi vytvořte tabulku se stejným názvem, jaký je v .env souboru u CRAWLED_TABLE, která bude sloužit pro ukládání imformací o nalezených webech:
 
 ```sql
 CREATE TABLE crawled (
@@ -65,7 +67,7 @@ CREATE TABLE crawled (
 );
 ```
 
-Dále vytvořte tabulku s názvem "queue", která bude sloužit pro ukládání odkazů, které ještě nebyly procházeny:
+Dále vytvořte tabulku se stejným názvem, jaký je v .env souboru u QUEUE_TABLE, která bude sloužit pro ukládání odkazů, které ještě nebyly procházeny:
 
 ```sql
 CREATE TABLE queue (

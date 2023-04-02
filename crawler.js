@@ -12,9 +12,7 @@ module.exports.getOldestEntry = async function (pool, tableName, sortField) {
     };
     const result = await client.query(query);
     if (result.rows.length === 0) {
-      throw new Error(
-        "No matching documents found for query: " + JSON.stringify(query)
-      );
+      return null;
     }
     client.release();
     return result.rows[0];
@@ -93,15 +91,15 @@ module.exports.getDataAboutWebsite = async function (url, headers) {
   try {
     const response = await axios.get(url, { headers });
     const $ = cheerio.load(response.data);
-    var title = $("title").text();
+    let title = $("title").text();
     if (title == null) {
       title = "";
     }
-    var description = $('meta[name="description"]').attr("content");
+    let description = $('meta[name="description"]').attr("content");
     if (description == null) {
       description = "";
     }
-    var keywords = $('meta[name="keywords"]').attr("content");
+    let keywords = $('meta[name="keywords"]').attr("content");
     if (keywords == null) {
       keywords = "";
     }
@@ -114,9 +112,9 @@ module.exports.getDataAboutWebsite = async function (url, headers) {
       keywords,
     };
 
-    var links = [];
+    let links = [];
     $("a").each((i, link) => {
-      var href = $(link).attr("href");
+      let href = $(link).attr("href");
 
       if (href == null) {
         return;
@@ -151,9 +149,9 @@ module.exports.getDataAboutWebsite = async function (url, headers) {
       links.push(href);
     });
 
-    var headings = [];
+    let headings = [];
     $("h1, h2, h3, h4, h5, h6").each((i, heading) => {
-      var text = $(heading).text();
+      let text = $(heading).text();
       if (text == null) {
         return;
       }
