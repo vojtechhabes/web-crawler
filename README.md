@@ -55,7 +55,7 @@ DB_PORT=
 V PostgreSQL databázi vytvořte tabulku se stejným názvem, jaký je v .env souboru u CRAWLED_TABLE, která bude sloužit pro ukládání imformací o nalezených webech:
 
 ```sql
-CREATE TABLE crawled (
+CREATE TABLE name (
   id SERIAL PRIMARY KEY,
   timestamp TIMESTAMP NOT NULL DEFAULT NOW(),
   url TEXT NOT NULL,
@@ -70,7 +70,7 @@ CREATE TABLE crawled (
 Dále vytvořte tabulku se stejným názvem, jaký je v .env souboru u QUEUE_TABLE, která bude sloužit pro ukládání odkazů, které ještě nebyly procházeny:
 
 ```sql
-CREATE TABLE queue (
+CREATE TABLE name (
   id SERIAL PRIMARY KEY,
   timestamp TIMESTAMP NOT NULL DEFAULT NOW(),
   url TEXT NOT NULL
