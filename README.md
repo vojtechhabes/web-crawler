@@ -83,6 +83,10 @@ Nakonec vložte do tabulky "queue" odkaz, na kterém má web crawler začít:
 INSERT INTO queue (url) VALUES ('https://www.example.com');
 ```
 
+## License
+
+Tento projekt je pod licencí [MIT](LICENSE).
+
 ## Tvůrce
 
 [Vojtěch Habeš](https://www.github.com/vojhab)
