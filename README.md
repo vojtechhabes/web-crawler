@@ -77,7 +77,7 @@ CREATE TABLE name (
 );
 ```
 
-Nakonec vložte do tabulky "queue" odkaz, na kterém má web crawler začít:
+Nakonec vložte do tabulky "queue" url adresu, na které má web crawler začít:
 
 ```sql
 INSERT INTO queue (url) VALUES ('https://www.example.com');
