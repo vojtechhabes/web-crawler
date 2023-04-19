@@ -37,7 +37,7 @@ module.exports.writeCrawledWebsite = async function (pool, tableName, data) {
       );
     }
     const query = {
-      text: `INSERT INTO ${tableName}(url, title, description, keywords, headings, links) VALUES($1, $2, $3, $4, $5, $6)`,
+      text: `INSERT INTO ${tableName}(url, title, description, keywords, headings, links, texts) VALUES($1, $2, $3, $4, $5, $6, $7)`,
       values: [
         data.websiteDetails.url,
         data.websiteDetails.title,
@@ -45,6 +45,7 @@ module.exports.writeCrawledWebsite = async function (pool, tableName, data) {
         data.websiteDetails.keywords,
         data.headings,
         data.links,
+        data.texts,
       ],
     };
     await client.query(query);
@@ -158,9 +159,19 @@ module.exports.getDataAboutWebsite = async function (url, headers) {
       headings.push(text);
     });
 
+    let texts = [];
+    $("p").each((i, text) => {
+      let textContent = $(text).text();
+      if (textContent == null) {
+        return;
+      }
+      texts.push(textContent);
+    });
+
     const data = {
       websiteDetails,
       headings,
+      texts,
       links,
     };
 
