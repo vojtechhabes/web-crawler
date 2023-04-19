@@ -63,7 +63,8 @@ CREATE TABLE name (
   description TEXT,
   keywords TEXT,
   headings TEXT[],
-  links TEXT[]
+  links TEXT[],
+  texts TEXT[]
 );
 ```
 
@@ -83,7 +84,7 @@ Nakonec vložte do tabulky "queue" url adresu, na které má web crawler začít
 INSERT INTO queue (url) VALUES ('https://www.example.com');
 ```
 
-## License
+## Licence
 
 Tento projekt je pod licencí [MIT](LICENSE).
 
