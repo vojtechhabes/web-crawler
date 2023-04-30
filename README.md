@@ -16,8 +16,15 @@ Cílem tohoto projektu je vytvořit sofistikované kompletní řešení pro auto
 
 ## Použité technologie
 
-- Node.js
-- PostgreSQL
+- **Node.js** je open-source framework pro běh JavaScriptového kódu na straně serveru.
+- **PostgreSQL** je databáze, která nabízí široké spektrum funkcí pro správu a ukládání dat a umožňuje uživatelům efektivně ukládat a vyhledávat data.
+
+### npm balíčky
+
+- **pg** umožňuje přístup k PostgreSQL databázi.
+- **Cheerio** dokáže zpracovávat HTML stránky.
+- **Axios** pro HTTP požadavky.
+- **Dotenv** načítá proměnné z .env souboru
 
 ## Licence
 
