@@ -28,6 +28,10 @@ V tomto projektu jsou používány následující npm balíčky:
 - [axios](https://www.npmjs.com/package/axios): pro HTTP požadavky
 - [dotenv](https://www.npmjs.com/package/dotenv): načítá proměnné z .env souboru
 
+## Spuštění
+
+Návod na spuštění web crawleru se nachází v [dokumentaci](https://github.com/vojhab/web-crawler/wiki/Spuštěn%C3%AD).
+
 ## Licence
 
 Tento projekt je pod licencí [MIT](LICENSE).
