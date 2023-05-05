@@ -34,7 +34,7 @@ Návod na spuštění web crawleru se nachází v [dokumentaci](https://github.c
 
 ## Plánované změny a funkce
 
-- [ ] použít nějakou vektorovou databázi místo PostgreSQL
+- [ ] použít [pgvector](https://github.com/pgvector/pgvector) pro ukládání vnoření slov
 
 ## Licence
 
