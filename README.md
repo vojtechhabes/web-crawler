@@ -34,7 +34,7 @@ Návod na spuštění web crawleru se nachází v [dokumentaci](https://github.c
 
 ## Plánované změny a funkce
 
-- [ ] Generovat vnoření slov pro vše, co se na stránce nachází, pro jednodušší pozdější zpracování.
+- [ ] použít nějakou vektorovou databázi místo PostgreSQL
 
 ## Licence
 
