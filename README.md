@@ -32,6 +32,10 @@ V tomto projektu jsou používány následující npm balíčky:
 
 Návod na spuštění web crawleru se nachází v [dokumentaci](https://github.com/vojhab/web-crawler/wiki/Spuštěn%C3%AD).
 
+## Plánované změny a funkce
+
+- [ ] generovat vnoření slov pro vše, co se na stránce nachází pro jednodušší pozdější zpracování
+
 ## Licence
 
 Tento projekt je pod licencí [MIT](LICENSE).
