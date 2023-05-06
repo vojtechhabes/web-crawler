@@ -16,8 +16,9 @@ Cílem tohoto projektu je vytvořit sofistikované kompletní řešení pro auto
 
 ## Použité technologie
 
-- [Node.js](https://nodejs.org): open-source framework pro běh JavaScriptového kódu na straně serveru
-- [PostgreSQL](https://www.postgresql.org): databáze, která nabízí široké spektrum funkcí pro správu a ukládání dat a umožňuje uživatelům efektivně ukládat a vyhledávat data
+- [Node.js](https://nodejs.org): Open-source framework pro běh JavaScriptového kódu na straně serveru.
+- [PostgreSQL](https://www.postgresql.org): Databáze, která nabízí široké spektrum funkcí pro správu a ukládání dat a umožňuje uživatelům efektivně ukládat a vyhledávat data.
+- [Hugging Face Inference API](https://huggingface.co/inference-api): API poskytované Hugging Face, což je platforma pro vývoj a sdílení NLP modelů.
 
 ### npm balíčky
 
