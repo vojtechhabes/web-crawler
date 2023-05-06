@@ -65,6 +65,6 @@ async function crawl(pool, url, headers, crawledTable, queueTable) {
       oldestEntry.id
     );
 
-    await new Promise((resolve) => setTimeout(resolve, 1000));
+    await new Promise((resolve) => setTimeout(resolve, 2000));
   }
 })();

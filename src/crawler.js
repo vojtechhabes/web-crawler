@@ -1,6 +1,8 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
 const dotenv = require("dotenv");
+const huggingface = require("./huggingface.js");
+const { json } = require("express");
 
 dotenv.config();
 
@@ -28,24 +30,22 @@ module.exports.writeCrawledWebsite = async function (pool, tableName, data) {
     const client = await pool.connect();
     const checkQuery = {
       text: `SELECT * FROM ${tableName} WHERE url = $1`,
-      values: [data.websiteDetails.url],
+      values: [data.url],
     };
     const checkResult = await client.query(checkQuery);
     if (checkResult.rows.length > 0) {
-      throw new Error(
-        `Website ${data.websiteDetails.url} already exists in the database`
-      );
+      throw new Error(`Website ${data.url} already exists in the database`);
     }
     const query = {
-      text: `INSERT INTO ${tableName}(url, title, description, keywords, headings, links, texts) VALUES($1, $2, $3, $4, $5, $6, $7)`,
+      text: `INSERT INTO ${tableName}(url, title, description, keywords, content, links, embeddings) VALUES($1, $2, $3, $4, $5, $6, $7)`,
       values: [
-        data.websiteDetails.url,
-        data.websiteDetails.title,
-        data.websiteDetails.description,
-        data.websiteDetails.keywords,
-        data.headings,
+        data.url,
+        data.title,
+        data.description,
+        data.keywords,
+        data.content,
         data.links,
-        data.texts,
+        JSON.stringify(data.embeddings),
       ],
     };
     await client.query(query);
@@ -106,13 +106,6 @@ module.exports.getDataAboutWebsite = async function (url, headers) {
     }
     url = response.request.res.responseUrl;
 
-    const websiteDetails = {
-      url,
-      title,
-      description,
-      keywords,
-    };
-
     let links = [];
     $("a").each((i, link) => {
       let href = $(link).attr("href");
@@ -150,29 +143,27 @@ module.exports.getDataAboutWebsite = async function (url, headers) {
       links.push(href);
     });
 
-    let headings = [];
-    $("h1, h2, h3, h4, h5, h6").each((i, heading) => {
-      let text = $(heading).text();
-      if (text == null) {
-        return;
-      }
-      headings.push(text);
-    });
-
-    let texts = [];
-    $("p").each((i, text) => {
+    let content = "";
+    $("h1, h2, h3, h4, h5, h6, p").each((i, text) => {
       let textContent = $(text).text();
       if (textContent == null) {
         return;
       }
-      texts.push(textContent);
+      content += textContent + " ";
+    });
+
+    let embeddings = await huggingface.getEmbeddings({
+      inputs: `${url}\n\n${title}\n\n${content}`,
     });
 
     const data = {
-      websiteDetails,
-      headings,
-      texts,
+      url,
+      title,
+      description,
+      keywords,
+      content,
       links,
+      embeddings,
     };
 
     return data;
