@@ -162,8 +162,6 @@ module.exports.getDataAboutWebsite = async function (url, headers) {
       }
     }
 
-    console.log(description);
-
     let embeddings = await huggingface.getEmbeddings({
       inputs: `${url}\n\n${title}\n\n${content}`,
     });
