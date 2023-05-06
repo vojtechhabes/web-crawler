@@ -37,6 +37,7 @@ Návod na spuštění web crawleru se nachází v [dokumentaci](https://github.c
 - [x] použít [pgvector](https://github.com/pgvector/pgvector) pro ukládání vnoření slov
 - [ ] generovat popis stránky pomocí AI pokud není dostupný
 - [ ] generovat klíčová slova stránky pomocí AI pokud nejsou dostupná
+- [ ] použít [@huggingface/inference](https://www.npmjs.com/package/@huggingface/inference) pro přístup k [Inference API od Hugging Face](https://huggingface.co/inference-api)
 
 ## Licence
 
