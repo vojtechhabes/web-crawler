@@ -34,7 +34,9 @@ Návod na spuštění web crawleru se nachází v [dokumentaci](https://github.c
 
 ## Plánované změny a funkce
 
-- [ ] použít [pgvector](https://github.com/pgvector/pgvector) pro ukládání vnoření slov
+- [x] použít [pgvector](https://github.com/pgvector/pgvector) pro ukládání vnoření slov
+- [ ] generovat popis stránky pomocí AI pokud není dostupný
+- [ ] generovat klíčová slova stránky pomocí AI pokud nejsou dostupná
 
 ## Licence
 
