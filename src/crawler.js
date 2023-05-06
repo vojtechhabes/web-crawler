@@ -38,15 +38,15 @@ module.exports.writeCrawledWebsite = async function (pool, tableName, data) {
       );
     }
     const query = {
-      text: `INSERT INTO ${tableName}(url, title, description, keywords, headings, links, texts) VALUES($1, $2, $3, $4, $5, $6, $7)`,
+      text: `INSERT INTO ${tableName}(url, title, description, keywords, content, links, embeddings) VALUES($1, $2, $3, $4, $5, $6, $7)`,
       values: [
-        data.websiteDetails.url,
-        data.websiteDetails.title,
-        data.websiteDetails.description,
-        data.websiteDetails.keywords,
-        data.headings,
+        data.url,
+        data.title,
+        data.description,
+        data.keywords,
+        data.content,
         data.links,
-        data.texts,
+        data.embeddings,
       ],
     };
     await client.query(query);
