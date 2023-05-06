@@ -106,13 +106,6 @@ module.exports.getDataAboutWebsite = async function (url, headers) {
     }
     url = response.request.res.responseUrl;
 
-    const websiteDetails = {
-      url,
-      title,
-      description,
-      keywords,
-    };
-
     let links = [];
     $("a").each((i, link) => {
       let href = $(link).attr("href");
@@ -150,28 +143,21 @@ module.exports.getDataAboutWebsite = async function (url, headers) {
       links.push(href);
     });
 
-    let headings = [];
-    $("h1, h2, h3, h4, h5, h6").each((i, heading) => {
-      let text = $(heading).text();
-      if (text == null) {
-        return;
-      }
-      headings.push(text);
-    });
-
-    let texts = [];
-    $("p").each((i, text) => {
+    let content = "";
+    $("h1, h2, h3, h4, h5, h6, p").each((i, text) => {
       let textContent = $(text).text();
       if (textContent == null) {
         return;
       }
-      texts.push(textContent);
+      content += textContent + " ";
     });
 
     const data = {
-      websiteDetails,
-      headings,
-      texts,
+      url,
+      title,
+      description,
+      keywords,
+      content,
       links,
     };
 
