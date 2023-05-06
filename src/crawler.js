@@ -2,6 +2,7 @@ const axios = require("axios");
 const cheerio = require("cheerio");
 const dotenv = require("dotenv");
 const huggingface = require("./huggingface.js");
+const { json } = require("express");
 
 dotenv.config();
 
@@ -29,13 +30,11 @@ module.exports.writeCrawledWebsite = async function (pool, tableName, data) {
     const client = await pool.connect();
     const checkQuery = {
       text: `SELECT * FROM ${tableName} WHERE url = $1`,
-      values: [data.websiteDetails.url],
+      values: [data.url],
     };
     const checkResult = await client.query(checkQuery);
     if (checkResult.rows.length > 0) {
-      throw new Error(
-        `Website ${data.websiteDetails.url} already exists in the database`
-      );
+      throw new Error(`Website ${data.url} already exists in the database`);
     }
     const query = {
       text: `INSERT INTO ${tableName}(url, title, description, keywords, content, links, embeddings) VALUES($1, $2, $3, $4, $5, $6, $7)`,
@@ -46,7 +45,7 @@ module.exports.writeCrawledWebsite = async function (pool, tableName, data) {
         data.keywords,
         data.content,
         data.links,
-        data.embeddings,
+        JSON.stringify(data.embeddings),
       ],
     };
     await client.query(query);
@@ -153,7 +152,9 @@ module.exports.getDataAboutWebsite = async function (url, headers) {
       content += textContent + " ";
     });
 
-    let embeddings = await huggingface.getEmbeddings({ inputs: content });
+    let embeddings = await huggingface.getEmbeddings({
+      inputs: `${url}\n\n${title}\n\n${content}`,
+    });
 
     const data = {
       url,
