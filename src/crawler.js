@@ -1,6 +1,7 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
 const dotenv = require("dotenv");
+const huggingface = require("./huggingface.js");
 
 dotenv.config();
 
@@ -152,6 +153,8 @@ module.exports.getDataAboutWebsite = async function (url, headers) {
       content += textContent + " ";
     });
 
+    let embeddings = await huggingface.getEmbeddings({ inputs: content });
+
     const data = {
       url,
       title,
@@ -159,25 +162,11 @@ module.exports.getDataAboutWebsite = async function (url, headers) {
       keywords,
       content,
       links,
+      embeddings,
     };
 
     return data;
   } catch (error) {
     throw new Error("Error getting data about website: " + error.message);
   }
-};
-
-module.exports.getEmbeddings = async function (data) {
-  const response = await fetch(
-    "https://api-inference.huggingface.co/pipeline/feature-extraction/sentence-transformers/all-MiniLM-L6-v2",
-    {
-      headers: {
-        Authorization: `Bearer ${process.env.HUGGINGFACE_API_KEY}`,
-      },
-      method: "POST",
-      body: JSON.stringify(data),
-    }
-  );
-  const result = await response.json();
-  return result[0];
 };
