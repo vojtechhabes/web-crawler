@@ -10,6 +10,8 @@
   "author": "Vojtěch Habeš",
   "license": "MIT",
   "dependencies": {
+    "@tensorflow-models/universal-sentence-encoder": "^1.3.3",
+    "@tensorflow/tfjs": "^4.5.0",
     "axios": "^1.3.3",
     "cheerio": "^1.0.0-rc.12",
     "dotenv": "^16.0.3",

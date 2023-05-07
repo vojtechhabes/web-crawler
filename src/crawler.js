@@ -1,7 +1,7 @@
 const axios = require("axios");
 const cheerio = require("cheerio");
 const dotenv = require("dotenv");
-const huggingface = require("./huggingface.js");
+const huggingface = require("./ml.js");
 const { json } = require("express");
 
 dotenv.config();
@@ -152,19 +152,9 @@ module.exports.getDataAboutWebsite = async function (url, headers) {
       content += textContent + " ";
     });
 
-    if (content != "") {
-      let shortendContent = content.substring(0, 1000);
-
-      if (description == "") {
-        description = await huggingface.createAIDescription({
-          inputs: shortendContent,
-        });
-      }
-    }
-
-    let embeddings = await huggingface.getEmbeddings({
-      inputs: `${url}\n\n${title}\n\n${content}`,
-    });
+    let embeddings = await huggingface.getEmbeddings(
+      `${url}\n\n${title}\n\n${content}`
+    );
 
     const data = {
       url,
