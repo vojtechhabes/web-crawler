@@ -108,6 +108,26 @@ module.exports.getDataAboutWebsite = async function (url, headers) {
     if (description == null) {
       description = "";
     }
+    if (description == "") {
+      $("p").each((i, text) => {
+        let textContent = $(text).text();
+        if (textContent == null) {
+          return;
+        }
+        if (description.length < 200) {
+          description += textContent;
+        }
+      });
+
+      if (description.length > 200) {
+        description = description.substring(0, 200);
+      }
+
+      if (description == "") {
+        description = "Description for this website is not available.";
+      }
+    }
+    description = description.replace(/(\r\n|\n|\r)/gm, " ");
     description = xss(description);
 
     let keywords = $('meta[name="keywords"]').attr("content");
@@ -170,28 +190,6 @@ module.exports.getDataAboutWebsite = async function (url, headers) {
     let embeddings = await huggingface.getEmbeddings(
       `${url}\n\n${title}\n\n${content}`
     );
-
-    if (description == "") {
-      $("p").each((i, text) => {
-        let textContent = $(text).text();
-        if (textContent == null) {
-          return;
-        }
-        if (description.length < 200) {
-          description += textContent;
-        }
-      });
-
-      if (description.length > 200) {
-        description = description.substring(0, 200);
-      }
-
-      if (description == "") {
-        description = "Description for this website is not available.";
-      }
-    }
-
-    description = description.replace(/(\r\n|\n|\r)/gm, " ");
 
     const data = {
       url,
