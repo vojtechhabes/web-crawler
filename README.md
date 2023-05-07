@@ -6,6 +6,10 @@ Tento Node.js program jako pavouk prochází webové stránky a sbírá o nich r
 
 Dokumentace tohoto projektu je dostupná na [GitHub Wiki](https://github.com/vojhab/web-crawler/wiki).
 
+## Prezentace
+
+Prezentace web crawleru a Ding search se nachází na [vojhab.page.link/pva-prezentace](https://vojhab.page.link/pva-prezentace).
+
 ## Cíl projektu
 
 Cílem tohoto projektu je vytvořit sofistikované kompletní řešení pro automatické procházení webových stránek, sbírání dat a jejich následné ukládání do databáze. Možnosti využití tohoto web crawlera jsou nekonečné - lze ho použít například pro vytvoření nového vyhledávače nebo pro provádění různých analýz dat.
