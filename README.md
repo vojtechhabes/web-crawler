@@ -38,7 +38,7 @@ Návod na spuštění web crawleru se nachází v [dokumentaci](https://github.c
 ## Plánované změny a funkce
 
 - [x] použít [pgvector](https://github.com/pgvector/pgvector) pro ukládání vnoření slov
-- [ ] pokud není dostupný popis stránky, vytvořit ho pomocí [facebook/bart-large-cnn](https://huggingface.co/facebook/bart-large-cnn) (nebo podobného modelu)
+- [x] pokud není dostupný popis stránky, vytvořit ho automaticky
 - [ ] pokud nejsou dostupná klíčová slova stránky, extrahovat je pomocí [ml6team/keyphrase-extraction-distilbert-inspec](https://huggingface.co/ml6team/keyphrase-extraction-distilbert-inspec) (nebo podobného modelu)
 - [x] použít [TensorFlow.js](https://www.tensorflow.org/js) místo Inference API k získávání vnoření slov
 
