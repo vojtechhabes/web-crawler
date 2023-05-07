@@ -161,6 +161,22 @@ module.exports.getDataAboutWebsite = async function (url, headers) {
       `${url}\n\n${title}\n\n${content}`
     );
 
+    if (description == "") {
+      $("p").each((i, text) => {
+        let textContent = $(text).text();
+        if (textContent == null) {
+          return;
+        }
+        if (description.length < 200) {
+          description += textContent;
+        }
+      });
+
+      if (description.length > 200) {
+        description = description.substring(0, 200);
+      }
+    }
+
     const data = {
       url,
       title,
