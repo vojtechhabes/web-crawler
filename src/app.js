@@ -8,14 +8,14 @@ const headers = {
   "User-Agent": process.env.USER_AGENT,
 };
 
-async function crawl(pool, url, headers, crawledTable, queueTable) {
-  console.log("🕒 Crawling: " + url);
+async function crawl(client, url, headers, crawledTable, queueTable) {
+  console.log("🧭 Crawling: " + url);
   try {
     const websiteData = await crawler.getDataAboutWebsite(url, headers);
 
-    await crawler.writeCrawledWebsite(pool, crawledTable, websiteData);
+    await crawler.writeCrawledWebsite(client, crawledTable, websiteData);
 
-    await crawler.addLinksToQueue(pool, queueTable, websiteData.links);
+    await crawler.addLinksToQueue(client, queueTable, websiteData.links);
 
     console.log(`✅ Crawled: ${url}`);
     return;
@@ -36,9 +36,10 @@ async function crawl(pool, url, headers, crawledTable, queueTable) {
   let oldestEntry;
 
   while (true) {
+    const client = await pool.connect();
     try {
       oldestEntry = await crawler.getOldestEntry(
-        pool,
+        client,
         process.env.QUEUE_TABLE,
         "timestamp"
       );
@@ -49,7 +50,7 @@ async function crawl(pool, url, headers, crawledTable, queueTable) {
       }
 
       await crawl(
-        pool,
+        client,
         oldestEntry.url,
         headers,
         process.env.CRAWLED_TABLE,
@@ -59,12 +60,16 @@ async function crawl(pool, url, headers, crawledTable, queueTable) {
       console.log(error.message);
     }
 
-    await crawler.deleteEntryById(
-      pool,
-      process.env.QUEUE_TABLE,
-      oldestEntry.id
-    );
+    await new Promise((resolve) => setTimeout(resolve, 500));
 
+    await crawler.deleteOldestEntry(
+      client,
+      process.env.QUEUE_TABLE,
+      "timestamp"
+    );
+    client.release();
+
+    console.log("🕒 Waiting 1 second");
     await new Promise((resolve) => setTimeout(resolve, 1000));
   }
 })();

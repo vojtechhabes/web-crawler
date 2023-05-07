@@ -7,10 +7,9 @@ var xss = require("xss");
 
 dotenv.config();
 
-module.exports.getOldestEntry = async function (pool, tableName, sortField) {
+module.exports.getOldestEntry = async function (client, tableName, sortField) {
   console.log(`ℹ️ Getting oldest entry from ${tableName}`);
   try {
-    const client = await pool.connect();
     const query = {
       text: `SELECT * FROM ${tableName} ORDER BY ${sortField} ASC LIMIT 1`,
     };
@@ -18,7 +17,7 @@ module.exports.getOldestEntry = async function (pool, tableName, sortField) {
     if (result.rows.length === 0) {
       return null;
     }
-    client.release();
+
     return result.rows[0];
   } catch (error) {
     throw new Error(
@@ -27,10 +26,9 @@ module.exports.getOldestEntry = async function (pool, tableName, sortField) {
   }
 };
 
-module.exports.writeCrawledWebsite = async function (pool, tableName, data) {
+module.exports.writeCrawledWebsite = async function (client, tableName, data) {
   console.log(`ℹ️ Writing entry to ${tableName}`);
   try {
-    const client = await pool.connect();
     const checkQuery = {
       text: `SELECT * FROM ${tableName} WHERE url = $1`,
       values: [data.url],
@@ -52,33 +50,48 @@ module.exports.writeCrawledWebsite = async function (pool, tableName, data) {
       ],
     };
     await client.query(query);
-    client.release();
+
     return;
   } catch (error) {
     throw new Error("Error writing entry: " + error.message);
   }
 };
 
-module.exports.deleteEntryById = async function (pool, tableName, id) {
+module.exports.deleteEntryById = async function (client, tableName, id) {
   console.log(`ℹ️ Deleting entry from ${tableName}`);
   try {
-    const client = await pool.connect();
     const query = {
       text: `DELETE FROM ${tableName} WHERE id = $1`,
       values: [id],
     };
     await client.query(query);
-    client.release();
+
     return;
   } catch (error) {
     throw new Error("Error deleting entry: " + error.message);
   }
 };
 
-module.exports.addLinksToQueue = async function (pool, tableName, data) {
+module.exports.deleteOldestEntry = async function (
+  client,
+  tableName,
+  sortField
+) {
+  console.log(`ℹ️ Deleting oldest entry from ${tableName}`);
+  try {
+    const query = {
+      text: `DELETE FROM ${tableName} WHERE id = (SELECT id FROM ${tableName} ORDER BY ${sortField} ASC LIMIT 1)`,
+    };
+    await client.query(query);
+    return;
+  } catch (error) {
+    throw new Error("Error deleting oldest entry: " + error.message);
+  }
+};
+
+module.exports.addLinksToQueue = async function (client, tableName, data) {
   console.log(`ℹ️ Adding links to ${tableName}`);
   try {
-    const client = await pool.connect();
     await data.forEach(async (link) => {
       const query = {
         text: `INSERT INTO ${tableName}(url) VALUES($1)`,
@@ -86,7 +99,7 @@ module.exports.addLinksToQueue = async function (pool, tableName, data) {
       };
       await client.query(query);
     });
-    client.release();
+
     return;
   } catch (error) {
     throw new Error("Error while adding links to queue: " + error.message);
