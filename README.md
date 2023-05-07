@@ -14,20 +14,22 @@ Cílem tohoto projektu je vytvořit sofistikované kompletní řešení pro auto
 
 [Vyhledávač Ding](https://github.com/vojhab/ding-search) je vytvořený na základě tohoto projektu. Ding je vyhledávač, který využívá data získaná z tohoto web crawlera a umožňuje uživatelům vyhledávat webové stránky. Vyhledávač je stále ve vývoji a v budoucnu bude obsahovat mnoho dalších funkcí.
 
-## Použité technologie
+# Použité technologie
 
 - [Node.js](https://nodejs.org): Open-source framework pro běh JavaScriptového kódu na straně serveru.
 - [PostgreSQL](https://www.postgresql.org): Databáze, která nabízí široké spektrum funkcí pro správu a ukládání dat a umožňuje uživatelům efektivně ukládat a vyhledávat data.
-- [Hugging Face Inference API](https://huggingface.co/inference-api): API poskytované Hugging Face, což je platforma pro vývoj a sdílení NLP modelů.
+- [TensorFlow.js](https://www.tensorflow.org/js): Je open-source knihovna pro strojové učení a práci s neuronovými sítěmi, kterou lze použít v JavaScriptu jak v prohlížeči, tak i na straně serveru pomocí Node.js.
 
-### npm balíčky
+## npm balíčky
 
-V tomto projektu jsou používány následující npm balíčky:
+V tomto projektu jsou použity následující npm balíčky:
 
-- [node-postgres](https://www.npmjs.com/package/pg): umožňuje přístup k PostgreSQL databázi
-- [cheerio](https://www.npmjs.com/package/cheerio): dokáže zpracovávat HTML stránky
-- [axios](https://www.npmjs.com/package/axios): pro HTTP požadavky
-- [dotenv](https://www.npmjs.com/package/dotenv): načítá proměnné z .env souboru
+- [node-postgres](https://www.npmjs.com/package/pg): Umožňuje přístup k PostgreSQL databázi.
+- [cheerio](https://www.npmjs.com/package/cheerio): Dokáže zpracovávat HTML stránky.
+- [axios](https://www.npmjs.com/package/axios): Pro HTTP požadavky.
+- [dotenv](https://www.npmjs.com/package/dotenv): Načítá proměnné z .env souboru.
+- [@tensorflow/tfjs](https://www.npmjs.com/package/@tensorflow/tfjs): Jedná se o npm balíček pro použití knihovny TensorFlow.js v projektu.
+- [@tensorflow-models/universal-sentence-encoder](https://www.npmjs.com/package/@tensorflow-models/universal-sentence-encoder): Balíček umožňující použití modelu Universal Sentence Encoder.
 
 ## Spuštění
 
