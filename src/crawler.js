@@ -3,6 +3,7 @@ const cheerio = require("cheerio");
 const dotenv = require("dotenv");
 const huggingface = require("./ml.js");
 const { json } = require("express");
+var xss = require("xss");
 
 dotenv.config();
 
@@ -101,15 +102,22 @@ module.exports.getDataAboutWebsite = async function (url, headers) {
     if (title == null) {
       title = "";
     }
+    title = xss(title);
+
     let description = $('meta[name="description"]').attr("content");
     if (description == null) {
       description = "";
     }
+    description = xss(description);
+
     let keywords = $('meta[name="keywords"]').attr("content");
     if (keywords == null) {
       keywords = "";
     }
+    keywords = xss(keywords);
+
     url = response.request.res.responseUrl;
+    url = xss(url);
 
     let links = [];
     $("a").each((i, link) => {
@@ -145,6 +153,7 @@ module.exports.getDataAboutWebsite = async function (url, headers) {
         href = `${parsedUrl.protocol}${href}`;
       }
 
+      href = xss(href);
       links.push(href);
     });
 
@@ -156,6 +165,7 @@ module.exports.getDataAboutWebsite = async function (url, headers) {
       }
       content += textContent + " ";
     });
+    content = xss(content);
 
     let embeddings = await huggingface.getEmbeddings(
       `${url}\n\n${title}\n\n${content}`
