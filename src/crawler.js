@@ -177,6 +177,8 @@ module.exports.getDataAboutWebsite = async function (url, headers) {
       }
     }
 
+    description = description.replace(/(\r\n|\n|\r)/gm, " ");
+
     const data = {
       url,
       title,
