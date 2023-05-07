@@ -8,7 +8,7 @@ Dokumentace tohoto projektu je dostupná na [GitHub Wiki](https://github.com/voj
 
 ## Prezentace
 
-Prezentace web crawleru a Ding search se nachází na [vojhab.page.link/pva-prezentace](https://vojhab.page.link/pva-prezentace).
+Prezentace web crawleru a [Ding search](https://github.com/vojhab/ding-search) se nachází na [vojhab.page.link/pva-prezentace](https://vojhab.page.link/pva-prezentace).
 
 ## Cíl projektu
 
