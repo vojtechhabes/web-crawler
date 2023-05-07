@@ -9,7 +9,7 @@ const headers = {
 };
 
 async function crawl(pool, url, headers, crawledTable, queueTable) {
-  console.log("Crawling: " + url);
+  console.log("🕒 Crawling: " + url);
   try {
     const websiteData = await crawler.getDataAboutWebsite(url, headers);
 
@@ -17,10 +17,10 @@ async function crawl(pool, url, headers, crawledTable, queueTable) {
 
     await crawler.addLinksToQueue(pool, queueTable, websiteData.links);
 
-    console.log(`Crawled: ${url}`);
+    console.log(`✅ Crawled: ${url}`);
     return;
   } catch (error) {
-    throw new Error(`Error while crawling ${url}: ${error.message}`);
+    throw new Error(`❗️ Error while crawling ${url}: ${error.message}`);
   }
 }
 
@@ -44,7 +44,7 @@ async function crawl(pool, url, headers, crawledTable, queueTable) {
       );
 
       if (oldestEntry == null) {
-        console.log("Queue is empty");
+        console.log("🫙 Queue is empty");
         break;
       }
 

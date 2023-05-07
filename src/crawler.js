@@ -7,6 +7,7 @@ const { json } = require("express");
 dotenv.config();
 
 module.exports.getOldestEntry = async function (pool, tableName, sortField) {
+  console.log(`ℹ️ Getting oldest entry from ${tableName}`);
   try {
     const client = await pool.connect();
     const query = {
@@ -26,6 +27,7 @@ module.exports.getOldestEntry = async function (pool, tableName, sortField) {
 };
 
 module.exports.writeCrawledWebsite = async function (pool, tableName, data) {
+  console.log(`ℹ️ Writing entry to ${tableName}`);
   try {
     const client = await pool.connect();
     const checkQuery = {
@@ -57,6 +59,7 @@ module.exports.writeCrawledWebsite = async function (pool, tableName, data) {
 };
 
 module.exports.deleteEntryById = async function (pool, tableName, id) {
+  console.log(`ℹ️ Deleting entry from ${tableName}`);
   try {
     const client = await pool.connect();
     const query = {
@@ -72,6 +75,7 @@ module.exports.deleteEntryById = async function (pool, tableName, id) {
 };
 
 module.exports.addLinksToQueue = async function (pool, tableName, data) {
+  console.log(`ℹ️ Adding links to ${tableName}`);
   try {
     const client = await pool.connect();
     await data.forEach(async (link) => {
@@ -89,6 +93,7 @@ module.exports.addLinksToQueue = async function (pool, tableName, data) {
 };
 
 module.exports.getDataAboutWebsite = async function (url, headers) {
+  console.log(`ℹ️ Getting data about website ${url}`);
   try {
     const response = await axios.get(url, { headers });
     const $ = cheerio.load(response.data);
