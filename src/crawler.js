@@ -175,6 +175,10 @@ module.exports.getDataAboutWebsite = async function (url, headers) {
       if (description.length > 200) {
         description = description.substring(0, 200);
       }
+
+      if (description == "") {
+        description = "Description for this website is not available.";
+      }
     }
 
     description = description.replace(/(\r\n|\n|\r)/gm, " ");
