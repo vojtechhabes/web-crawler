@@ -9,6 +9,6 @@ module.exports.getEmbeddings = async function (data) {
   const model = await use.load();
   const sentences = data;
   const embeddings = await model.embed(sentences);
-  let result = embeddings.arraySync()[0];
+  const result = embeddings.arraySync()[0];
   return result;
 };
