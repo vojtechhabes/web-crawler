@@ -20,7 +20,7 @@ Cílem tohoto projektu je vytvořit sofistikované kompletní řešení pro auto
 
 # Použité technologie
 
-- [Node.js](https://nodejs.org): Open-source framework pro běh JavaScriptového kódu na straně serveru.
+- [Node.js](https://nodejs.org): Open-source runtime pro běh JavaScriptového kódu na straně serveru.
 - [PostgreSQL](https://www.postgresql.org): Databáze, která nabízí široké spektrum funkcí pro správu a ukládání dat a umožňuje uživatelům efektivně ukládat a vyhledávat data.
 - [TensorFlow.js](https://www.tensorflow.org/js): Je open-source knihovna pro strojové učení a práci s neuronovými sítěmi, kterou lze použít v JavaScriptu jak v prohlížeči, tak i na straně serveru pomocí Node.js.
 
