@@ -4,11 +4,11 @@ Tento Node.js program jako pavouk prochází webové stránky a sbírá o nich r
 
 ## Dokumentace
 
-Dokumentace tohoto projektu je dostupná na [GitHub Wiki](https://github.com/vojhab/web-crawler/wiki).
+Dokumentace tohoto projektu je dostupná na [GitHub Wiki](https://github.com/vojtechhabes/web-crawler/wiki).
 
 ## Prezentace
 
-Prezentace web crawleru a [Ding search](https://github.com/vojhab/ding-search) se nachází na [vojhab.page.link/pva-prezentace](https://vojhab.page.link/pva-prezentace).
+Prezentace web crawleru a [Ding search](https://github.com/vojtechhabes/ding-search) se nachází na [vojhab.page.link/pva-prezentace](https://vojhab.page.link/pva-prezentace).
 
 ## Cíl projektu
 
@@ -16,7 +16,7 @@ Cílem tohoto projektu je vytvořit sofistikované kompletní řešení pro auto
 
 ### Vyhledávač
 
-[Vyhledávač Ding](https://github.com/vojhab/ding-search) je vytvořený na základě tohoto projektu. Ding je vyhledávač, který využívá data získaná z tohoto web crawlera a umožňuje uživatelům vyhledávat webové stránky. Vyhledávač je stále ve vývoji a v budoucnu bude obsahovat mnoho dalších funkcí.
+[Vyhledávač Ding](https://github.com/vojtechhabes/ding-search) je vytvořený na základě tohoto projektu. Ding je vyhledávač, který využívá data získaná z tohoto web crawlera a umožňuje uživatelům vyhledávat webové stránky. Vyhledávač je stále ve vývoji a v budoucnu bude obsahovat mnoho dalších funkcí.
 
 # Použité technologie
 
@@ -37,7 +37,7 @@ V tomto projektu jsou použity následující npm balíčky:
 
 ## Spuštění
 
-Návod na spuštění web crawleru se nachází v [dokumentaci](https://github.com/vojhab/web-crawler/wiki/Spuštěn%C3%AD).
+Návod na spuštění web crawleru se nachází v [dokumentaci](https://github.com/vojtechhabes/web-crawler/wiki/Spuštěn%C3%AD).
 
 ## Plánované změny a funkce
 
@@ -52,6 +52,6 @@ Tento projekt je pod licencí [MIT](LICENSE).
 
 ## Tvůrce
 
-[Vojtěch Habeš](https://www.github.com/vojhab)
+[Vojtěch Habeš](https://www.github.com/vojtechhabes)
 
 habes.vo.2022@ssps.cz
